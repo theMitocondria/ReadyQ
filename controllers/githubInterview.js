@@ -10,7 +10,7 @@ export const githubInterview = async(req, res) => {
 
         const openai = new OpenAIApi(config);
         let {githubUsername, githubRepo, userId, questionAnswer} = req.body;
-        // userId = "6610d0ababca2e0260dc6506"
+        userId = "661060525b132bef648c9cfd"
         
         
 
@@ -37,7 +37,7 @@ export const githubInterview = async(req, res) => {
         }
 
 
-        if(usr.githubQuestions.length == 5){
+        if(usr.githubQuestions.length == 11){
             
             let responses = "";
             for(let i = 0 ; i < usr.githubQuestions.length ; i++){
