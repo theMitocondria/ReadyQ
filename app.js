@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import Database from "./Database.js";
 import UserRoutes from "./routes/User.js";
+import { githubInterview } from "./controllers/githubInterview.js";
 
 const app = express();
 dotenv.config();
@@ -12,6 +13,7 @@ app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 
 app.use("/user", UserRoutes)
+app.use("/interview", githubInterview)
 
 
 Database();
