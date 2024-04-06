@@ -20,12 +20,25 @@ const UserSchema = new mongoose.Schema({
     }, 
 
     allContests:[
-        {type : Number, 
-        default : 0}
+        {type : Number}
     ],
     passKeys:[{
         type:Number
-    }]
+    }],
+
+    githubQuestions:[
+        {
+            type:"String",
+        }
+    ], 
+
+    githubAnswers:[
+        {
+            type : "String",
+        }
+    ]
+
+
     
 })
 
