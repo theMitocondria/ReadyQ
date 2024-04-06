@@ -65,7 +65,7 @@ export const techInterview = async(req, res) => {
         if(usr.techQuestions.length) prevQuestion = usr.techQuestions.at(-1),  usr.techAnswers.push(questionAnswer);
        
         if(usr.techQuestions.length == 0) 
-            sendmessage = "hi chatgpt u need to take my interview as a " +  level + " level " + stack + "senior developer . U need to take my interview for above position and behave as one . Be as acurate and technical as possible"
+            sendmessage = "hi chatgpt u need to take my interview as a " +  level + " level " + stack + " developer . U need to take my interview for above position and behave as one . Be as acurate and technical as possible and dont repeat questions . If user does not know anything of that topic move to another topic."
         else
             sendmessage = `the response for ${prevQuestion} is ${questionAnswer} , now as an Interviwer ask me next question {prefferred to be technical more} no matter the answer is provide is right or  wrong.`
        
