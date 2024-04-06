@@ -8,28 +8,38 @@ export const techInterview = async(req, res) => {
             apiKey: process.env.OPENAI_API_KEY
         });
 
+       
+
         const openai = new OpenAIApi(config);
 
         let {level, stack, userId, questionAnswer} = req.body;
+        console.log(level);
+        console.log(stack);
+        console.log(questionAnswer);
         userId = "661060525b132bef648c9cfd"
         
         let usr = await User.findById(userId);
-
+        console.log(usr);
         if(!usr){
             return res.status(401).json({
                 message : "unauthorised"
             })
         }
-
+      
+        if(level && stack){
+            usr.techQuestions = [];
+            await  usr.save();
+        }
         
-
+      
+      
         if((usr.techQuestions.length == 0) && (!stack || !level || !userId)){
             return res.status(400).json({
                 message:"fields cannot be empty"
             })
         }
 
-
+        console.log(usr.techQuestions.length)
         if(usr.techQuestions.length == 11){
             
             let responses = "";
@@ -46,11 +56,11 @@ export const techInterview = async(req, res) => {
                     content: responses,
                 }],
             })
-
+           
            usr.techAnswers = [];
             usr.techQuestions = [];
            await usr.save();
-
+          
             return res.status(200).json({
                 success : true,
                 message : response.data.choices[0].message.content
@@ -62,15 +72,16 @@ export const techInterview = async(req, res) => {
         let sendmessage;
         
         let prevQuestion = "";
-        if(usr.techQuestions.length) prevQuestion = usr.techQuestions.at(-1),  usr.techAnswers.push(questionAnswer);
-       
+        if(usr.techQuestions.length != 0) prevQuestion = usr.techQuestions.at(-1),  usr.techAnswers.push(questionAnswer);
+        
+        
+
         if(usr.techQuestions.length == 0) 
-            sendmessage = "hi chatgpt u need to take my interview as a " +  level + " level " + stack + " developer . U need to take my interview for above position and behave as one . Be as acurate and technical as possible and dont repeat questions . If user does not know anything of that topic move to another topic."
+            sendmessage = "hi chatgpt u need to take my interview as a " +  level + " level " + stack + " developer . U need to take my interview for above position and behave as one . Be as acurate and technical as possible and dont repeat questions . If user does not know anything of that topic move to another topic.Ask one question at a time and increase or decrease question level on behalf of previous answer"
         else
             sendmessage = `the response for ${prevQuestion} is ${questionAnswer} , now as an Interviwer ask me next question {prefferred to be technical more} no matter the answer is provide is right or  wrong.`
        
-
-        
+        console.log("niche")
         const response = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             messages: [{ 
@@ -78,6 +89,9 @@ export const techInterview = async(req, res) => {
                 content: sendmessage,
             }],
           })
+
+          console.log(sendmessage)
+        
 
       
           const incommingMessage = response.data.choices[0].message.content;
@@ -90,9 +104,10 @@ export const techInterview = async(req, res) => {
 
 
     }catch(e){
-
-        res.status(500).json({
+        console.log(e.message);
+        return res.status(500).json({
             success: false,
+          
             message: e.message,
            })
         }

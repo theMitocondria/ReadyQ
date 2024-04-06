@@ -12,7 +12,7 @@ export const githubInterview = async(req, res) => {
         let {githubUsername, githubRepo, userId, questionAnswer} = req.body;
         userId = "661060525b132bef648c9cfd"
         
-        console.log(githubRepo, githubUsername);
+        console.log(githubRepo, githubUsername, questionAnswer);
 
         let usr = await User.findById(userId);
 
